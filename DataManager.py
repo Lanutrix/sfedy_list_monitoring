@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import requests
 
-from student import Student
+from Student import Student
 
 class DataManager:
     def __init__(self, urls):

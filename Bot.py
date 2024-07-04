@@ -1,8 +1,8 @@
-from data_manager import DataManager
+from DataManager import DataManager
 
 class Bot:
-    def __init__(self, data_manager):
-        self.data_manager = data_manager
+    def __init__(self, DataManager):
+        self.DataManager = DataManager
 
     def display_program_options(self):
         print("Доступные направления:")
@@ -45,11 +45,11 @@ class Bot:
         menu_choice = self.get_menu_choice()
 
         if menu_choice == 1:
-            student_data = self.data_manager.get_student_data(snils, program)
+            student_data = self.DataManager.get_student_data(snils, program)
             if student_data:
                 print(student_data)
             else:
                 print("Студент не найден или не зачислен на выбранное направление.")
         elif menu_choice == 2:
-            total_applicants = self.data_manager.get_total_applicants(program)
+            total_applicants = self.DataManager.get_total_applicants(program)
             print(f"Общее количество подавших заявления на {program}: {total_applicants}")
