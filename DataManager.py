@@ -20,11 +20,9 @@ class DataManager:
             snils = self.extract_snils(cells)
             if snils:
                 position = cells[cells.index(snils) - 1].text.strip()
-                score = ''.join([cell.text.strip() for cell in cells[cells.index(snils) + 1:cells.index(snils) + 18]])
-                self.student_data[snils] = {
-                    'position': position,
-                    'score': score
-                }
+                score_cells = cells[cells.index(snils) + 6:cells.index(snils) + 24]
+                score = ''.join([cell.text.strip() for cell in score_cells])
+                self.student_data[self.format_snils(snils.text.strip())] = Student(self.format_snils(snils.text.strip()), position, score)        
         
         # Извлечение данных об общем количестве заявлений
         total_applications_element = soup.find('div', class_='total-applications')
