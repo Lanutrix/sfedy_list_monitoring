@@ -35,8 +35,23 @@ class DataManager:
         #
     
     def extract_snils(self, cells):
+        snils_pattern = r'\d{3}-\d{3}-\d{3}\s\d{2}'
         for cell in cells:
-            if 'snils' in cell.get('class', []):
+            text = cell.text.strip()
+            if re.search(snils_pattern,text):
                 return cell
+            
+    def format_snils(self, snils):
+        return snils
+    
+    def get_student_data(self, snils):
+        formatted_snils = self.format_snils(snils)
+        if formatted_snils in self.student_data:
+            return self.student_data[formatted_snils]
+        else:
+            return None
+        
+    def get_total_applications(self):
+        return self.total_applications
             
                 
