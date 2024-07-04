@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
+import re
 
 from Student import Student
 
@@ -8,13 +9,18 @@ class DataManager:
         self.urls = urls
         self.student_data = {}
 
-    def format_snils(self, snils):
-        return ''.join(snils.split())
-
     def extract_snils(self, cells):
         for cell in cells:
-            if cell.text.strip().isdigit() and len(cell.text.strip()) == 11:
-                return cell
+            snils = cell.text.strip()
+            if len(snils) == 14 and snils.replace('-', '').isdigit():
+                return snils
+        return None
+
+    def format_snils(self, snils):
+        snils = snils.strip()
+        digits = re.findall(r'\d', snils)
+        if len(digits) == 11:
+            return f"{digits[0]}{digits[1]}{digits[2]}-{digits[3]}{digits[4]}-{digits[5]}{digits[6]}{digits[7]}{digits[8]}{digits[9]}"
         return None
 
     def parse_webpage(self, url):
@@ -45,9 +51,10 @@ class DataManager:
 
     def get_student_data(self, snils, program):
         formatted_snils = self.format_snils(snils)
-        if formatted_snils in self.student_data:
-            if self.student_data[formatted_snils].program == program:
-                return self.student_data[formatted_snils]
+        for stored_snils, student_data in self.student_data.items():
+            if formatted_snils == stored_snils:
+                if student_data.program == program:
+                    return student_data
         return None
 
     def get_total_applicants(self, program):

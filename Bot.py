@@ -39,17 +39,21 @@ class Bot:
 
     def run(self):
         snils = input("Введите СНИЛС студента: ")
-        self.display_program_options()
-        program = self.get_program_choice()
-        self.display_menu()
-        menu_choice = self.get_menu_choice()
+        formatted_snils = self.DataManager.format_snils(snils)
+        if formatted_snils:
+            self.display_program_options()
+            program = self.get_program_choice()
+            self.display_menu()
+            menu_choice = self.get_menu_choice()
 
-        if menu_choice == 1:
-            student_data = self.DataManager.get_student_data(snils, program)
-            if student_data:
-                print(student_data)
-            else:
-                print("Студент не найден или не зачислен на выбранное направление.")
-        elif menu_choice == 2:
-            total_applicants = self.DataManager.get_total_applicants(program)
-            print(f"Общее количество подавших заявления на {program}: {total_applicants}")
+            if menu_choice == 1:
+                student_data = self.DataManager.get_student_data(formatted_snils, program)
+                if student_data:
+                    print(student_data)
+                else:
+                    print("Студент не найден или не зачислен на выбранное направление.")
+            elif menu_choice == 2:
+                total_applicants = self.DataManager.get_total_applicants(program)
+                print(f"Общее количество подавших заявления на {program}: {total_applicants}")
+        else:
+            print("Некорректный формат СНИЛС.")
